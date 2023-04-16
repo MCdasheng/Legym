@@ -15,7 +15,7 @@ signUp()
   .catch((e) => $.log(e))
   .finally(() => {
     $.log("ok");
-    $done();
+    $.done();
   });
 
 function login() {
