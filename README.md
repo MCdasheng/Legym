@@ -8,8 +8,6 @@
 
 > boxjs订阅 https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/mcdasheng.boxjs.json
 
-> 代码详见 https://github.com/MCdasheng/QuantumultX/blob/main/Scripts/myScripts/legym.js
-
 > 需要在boxjs中填入以下参数: 
 
 >     legym_loginBody (包含用户密码、学校信息)
@@ -20,11 +18,11 @@
 ```properties
 
 [rewrite_local]
-^https\:\/\/cpes\.legym\.cn\/education\/activity\/app\/attainability\/sign url script-request-body https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/legym_sign.cookie.js
+^https\:\/\/cpes\.legym\.cn\/education\/activity\/app\/attainability\/sign url script-request-body https://raw.githubusercontent.com/MCdasheng/Legym/main/legym_sign.cookie.js
 
 [task_local]
-30 10 * * * https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/legym.js, tag=乐健体育报名, img-url=figure.disc.sports.system, enabled=true
-30 16 * * * https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/legym_sign.js, tag=乐健体育签退, img-url=figure.disc.sports.system, enabled=true
+30 10 * * * https://raw.githubusercontent.com/MCdasheng/Legym/main/legym.js, tag=乐健体育报名, img-url=figure.disc.sports.system, enabled=true
+30 16 * * * https://raw.githubusercontent.com/MCdasheng/Legym/main/legym_sign.js, tag=乐健体育签退, img-url=figure.disc.sports.system, enabled=true
 
 [MITM]
 hostname = cpes.legym.cn
