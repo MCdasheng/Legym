@@ -1,10 +1,14 @@
 # 乐健体育
 
 > 代码兼容 QuanX
+
 > 详见 https://github.com/MCdasheng/QuantumultX/blob/main/Scripts/myScripts/legym.js
+
 > 需要在boxjs中填入参数: 
->       legym_loginBody (包含用户密码、学校信息)
->       legym_signBody (日更、手动签到时自动获取)
+
+>     legym_loginBody (包含用户密码、学校信息)
+
+>     legym_signBody (日更、手动签到时自动获取)
 
 ## 配置 (QuanX)
 
