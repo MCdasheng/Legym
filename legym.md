@@ -1,16 +1,21 @@
 # 乐健体育
 
-> 代码兼容 QuanX
+> 代码兼容 Quantumult X
 
-> 详见 https://github.com/MCdasheng/QuantumultX/blob/main/Scripts/myScripts/legym.js
+> 每日活动 自动报名、自动签退
 
-> 需要在boxjs中填入参数: 
+> 主要适配 uestc 沙河校区，其余学校或校区可以自行抓包更改参数
+
+> boxjs订阅 https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/mcdasheng.boxjs.json
+
+> 代码详见 https://github.com/MCdasheng/QuantumultX/blob/main/Scripts/myScripts/legym.js
+
+> 需要在boxjs中填入以下参数: 
 
 >     legym_loginBody (包含用户密码、学校信息)
+>     legym_signBody  (日更、手动签到时自动获取)
 
->     legym_signBody (日更、手动签到时自动获取)
-
-## 配置 (QuanX)
+## 配置 (Quantumult X)
 
 ```properties
 
