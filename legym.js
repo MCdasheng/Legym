@@ -1,15 +1,15 @@
 /*
 脚本功能:乐健体育报名
+BoxJs订阅: https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/mcdasheng.boxjs.json
+[task_local]
 30 10 * * * https://raw.githubusercontent.com/MCdasheng/Legym/main/legym.js, tag=乐健体育报名, img-url=figure.disc.sports.system, enabled=true
 @params: 
-  "legym_loginBody" (手动填入,包含账号密码信息等)
+  "legym_loginBody" (boxjs自行填入,包含账号密码信息等)
 @tips: 
   注意async函数内部执行的先后顺序,适当调用参数更合理
 */
 
 const $ = new Env("legym");
-
-$.body = $.getdata("legym_loginBody");
 
 signUp()
   .catch((e) => $.log(e))
@@ -20,13 +20,14 @@ signUp()
 
 function login() {
   $.log("正在登录...");
+  const loginBody = $.getdata("legym_loginBody");
   let options = {
     url: "https://cpes.legym.cn/authorization/user/manage/login",
     headers: {
       "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Html5Plus/1.0 (Immersed/50) uni-app`,
       "Content-Type": `application/json`,
     },
-    body: $.body,
+    body: loginBody,
   };
 
   return $.http.post(options).then((resp) => {
@@ -35,52 +36,12 @@ function login() {
     if (obj.code == 0) {
       var accessToken = obj.data.accessToken;
       var auth = "Bearer " + accessToken;
-      $.log("🎉用户鉴权获取成功");
+      $.log("🎉用户鉴权获取成功!");
       $.log(auth);
-      $prefs.setValueForKey(auth, "legym_auth");
+      $.setval(auth, "legym_auth"); // 存入boxjs中,方便后续调用
       return auth; // 返回 auth
     } else {
-      $.log("乐健体育", "🔴登录失败");
-      $.log(resp.body);
-      $.done();
-    }
-    // $.done();
-  });
-}
-
-async function getId(auth) {
-  $.log("正在获取活动id...");
-  let options = {
-    url: "https://cpes.legym.cn/education/app/activity/getActivityList",
-    headers: {
-      "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Html5Plus/1.0 (Immersed/50) uni-app`,
-      "Content-Type": `application/json`,
-      Organization: `402881ea7c39c5d5017c39d134ca03ab`, // uestc
-      Authorization: auth,
-    },
-    // campus: 沙河
-    body: `{"name":"","campus":"","page":1,"size":99,"state":"","topicId":"","week":""}`,
-  };
-
-  return $.http.post(options).then((resp) => {
-    // $.log(resp.body);
-    var obj = JSON.parse(resp.body);
-    if (obj.code == 0) {
-      const items = obj.data.items;
-      for (i = items.length - 1; i > 0; i--) {
-        if (items[i].name.search(/沙河/) != -1) {
-          var name = items[i].name;
-          var activityId = items[i].id;
-          break;
-        } else continue;
-      }
-
-      $.log("🎉活动id获取成功");
-      $.log(name);
-      $.log(activityId);
-      return activityId; // 返回 activityId
-    } else {
-      $.log("乐健体育", "🔴活动信息获取失败");
+      $.log("乐健体育", "🔴登录失败!");
       $.log(resp.body);
       $.done();
     }
@@ -91,8 +52,7 @@ async function getId(auth) {
 async function signUp() {
   $.log("正在报名...");
   const auth = await login();
-  const id = await getId(auth);
-
+  const id = await getActivityId(auth);
   let options = {
     url: "https://cpes.legym.cn/education/app/activity/signUp",
     headers: {
@@ -120,10 +80,48 @@ async function signUp() {
         $.msg("乐健体育", reason);
       }
     } else {
-      $.msg("乐健体育", "🔴报名失败");
+      $.msg("乐健体育", "🔴报名失败!");
       $.log(resp.body);
     }
     $.done();
+  });
+}
+
+async function getActivityId(auth) {
+  $.log("正在获取活动信息...");
+  let options = {
+    url: "https://cpes.legym.cn/education/app/activity/getActivityList",
+    headers: {
+      "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Html5Plus/1.0 (Immersed/50) uni-app`,
+      "Content-Type": `application/json`,
+      Organization: `402881ea7c39c5d5017c39d134ca03ab`, // uestc
+      Authorization: auth,
+    },
+    body: `{"name":"","campus":"","page":1,"size":99,"state":"","topicId":"","week":""}`,
+  };
+
+  return $.http.post(options).then((resp) => {
+    // $.log(resp.body);
+    var obj = JSON.parse(resp.body);
+    if (obj.code == 0) {
+      const items = obj.data.items;
+      for (i = items.length - 1; i > 0; i--) {
+        if (items[i].name.search(/沙河/) != -1) {
+          var name = items[i].name;
+          var activityId = items[i].id;
+          break;
+        } else continue;
+      }
+      $.log("🎉活动信息获取成功!");
+      $.log(`活动名:${name}`);
+      $.log(`活动id:${activityId}`);
+      return activityId; // 返回 activityId
+    } else {
+      $.log("乐健体育", "🔴活动信息获取失败!");
+      $.log(resp.body);
+      $.done();
+    }
+    // $.done();
   });
 }
 
