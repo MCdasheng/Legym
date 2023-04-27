@@ -1,5 +1,6 @@
 /* 
 脚本功能: 乐健体育自动签退
+[task_local]
 30 16 * * * https://raw.githubusercontent.com/MCdasheng/Legym/main/legym_sign.js, tag=乐健体育签退, img-url=figure.disc.sports.system, enabled=true
 */
 
@@ -29,20 +30,22 @@ $task.fetch(myRequest).then(
     if (obj.code == 0) {
       var notice = obj.message;
       notice = "🎉" + notice;
-      console.log("乐健体育签退");
       console.log(notice);
       $notify("乐健体育签退", notice);
       $done();
     } else {
-      var notice = "🔴签退失败!";
-      if (obj.msg) {
-        notice = "🔴" + obj.message;
+      if (obj.message) {
+        var msg = "🎉" + obj.message;
+        console.log(msg);
+        $notify("乐健体育签退", msg);
+        $done();
+      } else {
+        var notice = response.body;
+        console.log("🔴签退失败!");
+        console.log(notice);
+        $notify("乐健体育签退", "🔴签退失败!", notice);
+        $done();
       }
-      console.log("乐健体育签退");
-      console.log(notice);
-      console.log(response.body);
-      $notify("乐健体育签退", notice);
-      $done();
     }
   },
   (reason) => {
