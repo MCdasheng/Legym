@@ -1,7 +1,7 @@
 /* 
 脚本功能: 乐健体育自动签退
 [task_local]
-30 16 * * * https://raw.githubusercontent.com/MCdasheng/Legym/main/legym_sign.js, tag=乐健体育签退, img-url=figure.disc.sports.system, enabled=true
+30 16,17 * * * https://raw.githubusercontent.com/MCdasheng/Legym/main/legym_sign.js, tag=乐健体育签退, img-url=figure.disc.sports.system, enabled=true
 */
 
 const legym_signBody = $prefs.valueForKey("legym_signBody");
