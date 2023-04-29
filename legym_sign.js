@@ -34,22 +34,16 @@ $task.fetch(myRequest).then(
       $notify("乐健体育签退", notice);
       $done();
     } else {
-      if (obj.message) {
-        var msg = "🎉" + obj.message;
-        console.log(msg);
-        $notify("乐健体育签退", msg);
-        $done();
-      } else {
-        var notice = response.body;
-        console.log("🔴签退失败!");
-        console.log(notice);
-        $notify("乐健体育签退", "🔴签退失败!", notice);
-        $done();
-      }
+      var notice = "🔴签退失败!";
+      if (obj.message) notice = "🔴" + obj.message;
+      console.log(notice);
+      console.log(response.body);
+      $notify("乐健体育签退", notice, response.body);
+      $done();
     }
   },
   (reason) => {
-    console.log(reason.error);
+    $notify("乐健体育签退","🔴错误!",reason.error);
     $done();
   }
 );
