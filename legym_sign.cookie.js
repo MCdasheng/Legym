@@ -1,24 +1,19 @@
 /* 
 脚本功能: 获取乐健体育签到请求体,用于自动二次签到
 [rewrite local]
-^https\:\/\/cpes\.legym\.cn\/education\/activity\/app\/attainability\/sign url script-request-body https://raw.githubusercontent.com/MCdasheng/Legym/main/legym_sign.cookie.js
+^https\:\/\/cpes\.legym\.cn\/education\/activity\/app\/attainability\/sign url script-request-body https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/legym_sign.cookie.js
 [MITM]
 hostname = cpes.legym.cn
 */
 
 const $ = init();
 
-if ($request.body) {
-  const legym_signBody = $request.body;
-  $.msg("乐健体育", "🎉signBody获取成功");
-  $.log("🎉signBody获取成功");
-  $.log(legym_signBody);
-  $.setdata("legym_signBody", legym_signBody);
-  $.done();
-} else {
-  $.msg("🔴signBody获取失败");
-  $.done();
-}
+const legym_signBody = $request.body;
+$.msg("乐健体育", "🎉signBody获取成功");
+$.log("🎉signBody获取成功");
+$.log(legym_signBody);
+$.setdata("legym_signBody", legym_signBody);
+// $.done();
 
 function init() {
   isSurge = () => {
