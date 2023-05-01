@@ -1,5 +1,5 @@
 /*
-脚本功能:乐健体育报名
+脚本功能: 乐健体育报名 v2.0
 [task_local]
 30 10 * * * https://raw.githubusercontent.com/MCdasheng/Legym/main/legym.js, tag=乐健体育报名, img-url=figure.disc.sports.system, enabled=true
 @params: 
@@ -18,9 +18,10 @@ signUp()
   });
 
 async function signUp() {
-  $.log("正在报名...");
+  $.log("🟢正在报名...");
   const auth = await login();
   const id = await getActivityId(auth);
+
   let options = {
     url: "https://cpes.legym.cn/education/app/activity/signUp",
     headers: {
@@ -56,8 +57,9 @@ async function signUp() {
 }
 
 function login() {
-  $.log("正在登录...");
+  $.log("🟢正在登录...");
   const loginBody = $.getdata("legym_loginBody");
+
   let options = {
     url: "https://cpes.legym.cn/authorization/user/manage/login",
     headers: {
@@ -75,7 +77,7 @@ function login() {
       var auth = "Bearer " + accessToken;
       $.log("🎉用户鉴权获取成功!");
       $.log(auth);
-      $.setval(auth, "legym_auth"); // 存入boxjs中,方便后续调用
+      // $.setval(auth, "legym_auth"); // 存入boxjs中,方便后续调用
       return auth; // 返回 auth
     } else {
       $.log("❌登录失败!");
@@ -88,7 +90,8 @@ function login() {
 }
 
 function getActivityId(auth) {
-  $.log("正在获取活动信息...");
+  $.log("🟢正在获取活动信息...");
+
   let options = {
     url: "https://cpes.legym.cn/education/app/activity/getActivityList",
     headers: {
@@ -118,8 +121,9 @@ function getActivityId(auth) {
         $.log(`活动id:${activityId}`);
         return activityId; // 返回 activityId
       } else {
-        $.log("🔴活动id获取失败!");
-        $.msg("乐健体育", "🔴活动id获取失败!");
+        $.log("🔴活动信息获取失败!");
+        $.log(resp.body);
+        $.msg("乐健体育", "🔴活动信息获取失败!");
         $.done();
       }
     } else {
